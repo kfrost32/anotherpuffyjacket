@@ -37,7 +37,7 @@ export default function NewPost() {
     setError('');
 
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('posts')
         .insert([formData as PostInsert]);
 
