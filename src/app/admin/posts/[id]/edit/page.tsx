@@ -60,9 +60,11 @@ export default function EditPost() {
     setError('');
 
     try {
+      const { id, created_at, ...updateData } = formData;
+
       const { error } = await supabase
         .from('posts')
-        .update(formData as PostUpdate)
+        .update(updateData)
         .eq('id', postId);
 
       if (error) {
