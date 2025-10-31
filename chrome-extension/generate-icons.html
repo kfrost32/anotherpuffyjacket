@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate Extension Icons</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    h1 { color: #3b82f6; }
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+    button:hover { background: #2563eb; }
+    .preview {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+      align-items: flex-start;
+    }
+    .preview canvas {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Generate Extension Icons</h1>
+  <p>Click the buttons below to download the required icon files for your Chrome extension.</p>
+
+  <div class="preview" id="preview"></div>
+
+  <button onclick="generateIcons()">Generate All Icons</button>
+
+  <script>
+    function createIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#3b82f6';
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${size * 0.4}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('APJ', size / 2, size / 2);
+
+      return canvas;
+    }
+
+    function downloadCanvas(canvas, filename) {
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    function generateIcons() {
+      const sizes = [16, 48, 128];
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+
+      sizes.forEach(size => {
+        const canvas = createIcon(size);
+        preview.appendChild(canvas);
+        downloadCanvas(canvas, `icon${size}.png`);
+      });
+
+      alert('Icons downloaded! Move them to the chrome-extension folder.');
+    }
+
+    window.onload = () => {
+      const preview = document.getElementById('preview');
+      [16, 48, 128].forEach(size => {
+        const canvas = createIcon(size);
+        preview.appendChild(canvas);
+      });
+    };
+  </script>
+</body>
+</html>

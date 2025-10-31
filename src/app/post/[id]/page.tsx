@@ -1,19 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Post } from '@/types/database';
 import { supabase } from '@/lib/supabase';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Header } from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 export default function PostDetail() {
   const params = useParams();
-  const router = useRouter();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,122 +45,106 @@ export default function PostDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex justify-center items-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b border-gray-900"></div>
+        </div>
       </div>
     );
   }
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Post not found</h1>
-        <Link href="/">
-          <Button>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to feed
-          </Button>
-        </Link>
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="flex flex-col justify-center items-center h-64">
+          <h1 className="text-sm font-medium text-gray-900 mb-6">Post not found</h1>
+          <Link href="/">
+            <Button variant="ghost" size="sm">
+              Back to home
+            </Button>
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
-          <Link href="/">
-            <Button variant="ghost" className="mb-4">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to feed
-            </Button>
-          </Link>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-            Another Puffy Jacket
-          </h1>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      <Header />
 
-      <main className="max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
-        <Card className="p-4 sm:p-6 lg:p-8">
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
-            <div>
-              <div className="relative h-96 w-full rounded-lg overflow-hidden mb-4">
-                <Image
-                  src={post.feature_image}
-                  alt={post.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              
-              {post.additional_images && post.additional_images.length > 0 && (
-                <div className="grid grid-cols-3 gap-2">
-                  {post.additional_images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="relative h-24 rounded-lg overflow-hidden"
-                    >
-                      <Image
-                        src={image}
-                        alt={`${post.name} ${index + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+      <main className="max-w-6xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
+        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
+          <div className="lg:col-span-3">
+            <div className="w-full mb-6">
+              <Image
+                src={post.feature_image}
+                alt={post.name}
+                width={1200}
+                height={1600}
+                className="w-full h-auto"
+              />
             </div>
 
-            <div className="space-y-6">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge variant="secondary">{post.brand}</Badge>
-                  {post.price && (
-                    <span className="text-2xl font-bold text-green-600">
-                      ${post.price}
-                    </span>
-                  )}
-                </div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                  {post.name}
-                </h1>
+            {post.additional_images && post.additional_images.length > 0 && (
+              <div className="grid grid-cols-3 gap-4">
+                {post.additional_images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative w-full aspect-square"
+                  >
+                    <Image
+                      src={image}
+                      alt={`${post.name} ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
               </div>
+            )}
+          </div>
 
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                  Description
+          <div className="lg:col-span-2 space-y-8 lg:pt-2">
+            <div>
+              <p className="text-xs font-light tracking-widest text-gray-500 uppercase mb-3">
+                {post.brand}
+              </p>
+              <h1 className="text-xl font-light text-gray-900 mb-6 leading-relaxed">
+                {post.name}
+              </h1>
+              {post.price && (
+                <p className="text-sm font-light text-gray-900 mb-8">
+                  ${post.price}
+                </p>
+              )}
+              <Link href={post.url} target="_blank" rel="noopener noreferrer">
+                <Button className="w-full" size="default">
+                  View Product
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+
+            <div className="border-t border-gray-100 pt-8">
+              <p className="text-sm font-light text-gray-600 leading-relaxed">
+                {post.description}
+              </p>
+            </div>
+
+            {post.long_commentary && (
+              <div className="border-t border-gray-100 pt-8">
+                <h2 className="text-xs font-light tracking-widest text-gray-500 uppercase mb-4">
+                  Commentary
                 </h2>
-                <p className="text-gray-600 leading-relaxed">
-                  {post.description}
+                <p className="text-sm font-light text-gray-600 leading-relaxed italic">
+                  {post.long_commentary}
                 </p>
               </div>
-
-              {post.long_commentary && (
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                    My Take
-                  </h2>
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-gray-700 leading-relaxed">
-                      {post.long_commentary}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              <div className="pt-4">
-                <Link href={post.url} target="_blank" rel="noopener noreferrer">
-                  <Button className="w-full">
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    View Product
-                  </Button>
-                </Link>
-              </div>
-            </div>
+            )}
           </div>
-        </Card>
+        </div>
       </main>
     </div>
   );

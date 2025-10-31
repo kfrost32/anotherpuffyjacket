@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Another Puffy Jacket Scraper</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Another Puffy Jacket</h1>
+      <p class="subtitle">Product Scraper</p>
+    </header>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Analyzing page with AI...</p>
+    </div>
+
+    <div id="content" class="content hidden">
+      <form id="productForm">
+        <div class="form-group">
+          <label for="name">Product Name*</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="brand">Brand*</label>
+          <input type="text" id="brand" name="brand" required>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" name="price" step="0.01" min="0">
+        </div>
+
+        <div class="form-group">
+          <label for="url">Product URL*</label>
+          <input type="url" id="url" name="url" required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description*</label>
+          <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Featured Image*</label>
+          <div id="featuredImageSelector" class="image-grid"></div>
+          <input type="hidden" id="featuredImage" required>
+        </div>
+
+        <div class="form-group">
+          <label>Additional Images</label>
+          <div id="additionalImagesSelector" class="image-grid"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="shortCommentary">Short Commentary</label>
+          <textarea id="shortCommentary" name="shortCommentary" rows="2" placeholder="AI-generated..."></textarea>
+          <button type="button" id="regenerateShort" class="btn-secondary btn-small">Regenerate</button>
+        </div>
+
+        <div class="form-group">
+          <label for="longCommentary">Long Commentary</label>
+          <textarea id="longCommentary" name="longCommentary" rows="4" placeholder="AI-generated..."></textarea>
+          <button type="button" id="regenerateLong" class="btn-secondary btn-small">Regenerate</button>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="publishBtn" class="btn-primary">Publish to Supabase</button>
+        </div>
+
+        <div id="status" class="status hidden"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Ignore config with actual API keys
+config.js
+
+# Keep the template
+!config.template.js

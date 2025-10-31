@@ -1,13 +1,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: 'Necto Mono';
+  src: url('/fonts/NectoMono-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: 'Necto Mono', var(--font-geist-sans);
+  --font-mono: 'Necto Mono', var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -118,5 +126,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Necto Mono', monospace;
+  }
+  
+  .font-necto {
+    font-family: 'Necto Mono', monospace;
   }
 }

@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChatMessage } from './ChatMessage';
+import { PostCard } from './PostCard';
 import { Post } from '@/types/database';
 import { supabase } from '@/lib/supabase';
 
-export function ChatFeed() {
+export function PostGrid() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,15 +56,10 @@ export function ChatFeed() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
-      <div className="space-y-2">
-        {posts.map((post) => (
-          <div key={post.id}>
-            <ChatMessage post={post} type="product" />
-            {post.short_commentary && (
-              <ChatMessage post={post} type="commentary" />
-            )}
-          </div>
+    <div className="min-h-screen bg-white font-necto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 items-end">
+        {posts.map((post, index) => (
+          <PostCard key={post.id} post={post} type="product" index={index} />
         ))}
       </div>
     </div>
